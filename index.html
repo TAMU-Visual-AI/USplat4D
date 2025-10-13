@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="USplat4D: Uncertainty Matters in Dynamic Gaussian Splatting for Monocular 4D Reconstruction">
+  <meta property="og:title" content="USplat4D: Uncertainty Matters in Dynamic Gaussian Splatting for Monocular 4D Reconstruction">
+  <meta property="og:description" content="USplat4D: Uncertainty Matters in Dynamic Gaussian Splatting for Monocular 4D Reconstruction">
+  <meta property="twitter:title" content="USplat4D: Uncertainty Matters in Dynamic Gaussian Splatting for Monocular 4D Reconstruction">
+  <meta property="twitter:description" content="USplat4D: Uncertainty Matters in Dynamic Gaussian Splatting for Monocular 4D Reconstruction">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="keywords" content="4D reconstruction, Dynamic Reconstruction, 3D Tracking, Long-Range Motion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>USplat4D: Uncertainty Matters in Dynamic Gaussian Splatting for Monocular 4D Reconstruction</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D65ZW4CJYF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-D65ZW4CJYF');
+  </script>
+  
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/selection-panel.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/css/bulma-carousel.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.4/dist/js/bulma-carousel.min.js"></script>
+
+
+  <script src="./static/js/jquery-3.6.4.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/selection-panel.js"></script>
+  <script src="./static/js/video-selection.js"></script>
+
+
+</head>
+<body style="--video-width: 66.67vw;"> <!-- or 200% -->
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-size-2 publication-title">USplat4D: Uncertainty Matters in Dynamic <br> Gaussian Splatting for Monocular 4D Reconstruction </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a>Fengzhi Guo</a><sup>1</sup>, </span>
+            <span class="author-block">
+              <a>Chih-Chuan Hsu</a><sup>1</sup>, </span>
+            <span class="author-block">
+              <a>Sihao Ding</a><sup>2</sup>, </span>
+            <span class="author-block">
+              <a href="https://czhang0528.github.io/">Cheng Zhang</a><sup>1</sup>, </span> <br>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Texas A&M University</span> &nbsp;
+            <span class="author-block"><sup>2</sup>Mercedes-Benz Research & Development North America</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a 
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/TAMU-Visual-AI/usplat4d.git"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  <!-- </div> -->
+                  </a>
+              </span>
+              <!-- Demo Link. -->
+              <!-- <span class="link-block">
+                <a href="./results.html" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fa fa-building"></i>
+                  </span>
+                  <span>Interactive Gallery</span>
+                  </a>
+              </span> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Three columns */
+        grid-template-rows: repeat(1, 1fr); /* Two rows */
+        gap: 0px 4px; /* Gap between videos */
+        width: 80%; /* Set the container width to 80% */
+        margin: 0 auto; /* Center the container horizontally */
+    }
+
+    .video-grid video {
+        width: 100%; /* Videos fill the container width */
+        height: auto;
+    }
+    .video-one{
+        margin: 0 auto; /* Center the container horizontally */
+        text-align: center; /* Optional: ensures inline elements inside are centered */
+    }
+    .video-one video{
+        width: auto; /* Fixed width matching input video */
+        height: auto;
+    }
+    .video-one > :first-child {
+      margin-top: -60px;
+    }
+</style>
+
+<section>
+  <div class="video-one">
+    <div>
+      <video muted playsinline autoplay loop controls preload="auto">
+          <!-- <source src="assets/video/Motivation.mp4" type="video/mp4"> -->
+          <source src="assets/video/subvideo/Teaser3.mp4" type="video/mp4">
+      </video>
+    </div>
+  <div class="container is-max-desktop">
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <div class="content has-text-justified">
+      <p style="font-size: 0.9em;">
+        <p>
+        We show a challenging case from the <a href="https://kair-bair.github.io/dycheck/">DyCheck</a> dataset, where a person casually rotates a backpack while being captured by a moving monocular camera. The goal is to reconstruct the dynamic object for arbitrary viewpoints and timestamps. The state-of-the-art dynamic Gaussian Splatting methods, e.g., 
+        <a href="https://shape-of-motion.github.io">Shape-of-Motion (SoM)</a>, 
+        struggle on extreme novel views far from the input trajectory, such as opposite-side views (view 1) or large angle offsets (view 2). We propose <strong>USplat4D</strong>, an <strong>U</strong>ncertainty-aware dynamic Gaussian <strong>Splat</strong>ting model that produces more accurate and consistent <strong>4D</strong> reconstruction.
+        </p>
+      </div>
+     </div>
+  </div>
+  </div>
+</section>
+
+<!-- <br> -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+      <!-- <div class="column" style="width: 50%;"> -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Reconstructing dynamic 3D scenes from monocular input is fundamentally under-constrained,
+            with ambiguities arising from occlusion and extreme novel views. While dynamic Gaussian
+            Splatting offers an efficient representation, vanilla models optimize all Gaussian primitives
+            uniformly, ignoring whether they are well or poorly observed. This limitation leads to motion
+            drifts under occlusion and degraded synthesis when extrapolating to unseen views.
+            We argue that uncertainty matters: Gaussians with recurring observations across views and time
+            act as reliable anchors to guide motion, whereas those with limited visibility are treated as
+            less reliable. To this end, we introduce <strong>USplat4D</strong>, a novel
+            <strong>U</strong>ncertainty-aware dynamic Gaussian <strong>Splat</strong>ting framework
+            that propagates reliable motion cues to enhance <strong>4D</strong> reconstruction.
+            Our key insight is to estimate time-varying per-Gaussian uncertainty and leverage it
+            to construct a spatio-temporal graph for uncertainty-aware optimization.
+            Experiments on diverse real and synthetic datasets show that explicitly modeling
+            uncertainty consistently improves dynamic Gaussian Splatting models, yielding more
+            stable geometry under occlusion and high-quality synthesis at extreme viewpoints.
+          </p>
+        </div>
+      </div>
+    </div>
+    <br>
+</section>
+
+<img id="enlarged-image">
+    
+<style>
+  .video-grid-two-cols {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* Two columns */
+      gap: 10px; /* Gap between videos */
+      width: 60%; /* Set the container width to 60% */
+      margin: 0 auto; /* Center the container horizontally */
+      align-items: center;
+  }
+
+  .video-grid-two-cols video {
+      width: 100%; /* Videos fill the container width */
+      height: auto;
+  }
+  .video-grid-two-cols-narrow {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px; /* Gap between videos */
+    width: 50%; /* Set the container width to 60% */
+    margin: 0 auto; /* Center the container horizontally */
+    align-items: center;
+}
+
+.video-grid-two-cols-narrow video {
+    width: 100%; /* Videos fill the container width */
+    height: auto;
+}
+  .video-grid-three-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Two columns */
+      gap: 10px; /* Gap between videos */
+      width: 60%; /* Set the container width to 60% */
+      margin: 0 auto; /* Center the container horizontally */
+      align-items: center;
+  }
+
+  .video-grid-three-cols video {
+      width: 100%; /* Videos fill the container width */
+      height: auto;
+  }
+
+  .video-grid-three-cols-wide {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Two columns */
+    gap: 10px; /* Gap between videos */
+    width: 70%; /* Set the container width to 60% */
+    margin: 0 auto; /* Center the container horizontally */
+    align-items: center;
+}
+
+.video-grid-three-cols-wide video {
+    width: 100%; /* Videos fill the container width */
+    height: auto;
+}
+
+  .video-grid-four-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Two columns */
+    gap: 10px; /* Gap between videos */
+    width: 60%; /* Set the container width to 60% */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+
+  .video-grid-four-cols video {
+      width: 100%; /* Videos fill the container width */
+      height: auto;
+  }
+  
+
+  .video-grid-six-cols {
+    display: grid;
+    grid-template-columns: repeat(6, auto); /* Allow width to vary */
+    gap: 10px;
+    width: 100%;
+    margin: 0 auto;
+    align-items: stretch; /* Stretch children to match row height */
+  }
+
+  .video-grid-six-cols video {
+    height: 200px;
+    width: auto;
+    object-fit: contain;
+    vertical-align: top;
+    display: inline-block;
+  }
+
+  .video-container {
+    text-align: center;
+    margin: 12px auto;
+  }
+  .video-title {
+    font-size: clamp(0.6em, 1vw, 1em); /* Adjust the font size as needed */
+    margin-top: 5px; /* Space between the video and the title */
+  }
+  @media (max-width: 600px) {
+    .video-title {
+      font-size: 0.8em; /* Adjust the font size for smaller screens */
+    }
+  }
+
+/* Custom styles that still need to be maintained */
+.iframe-container {
+      position: relative;
+      width: 50%;
+      height: 600px;
+      margin: 0 auto 20px auto;
+      background-color: rgba(255, 255, 255, 0.5);  /* White with 50% opacity */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+      border-radius: 8px;
+    }
+
+    .iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
+    }
+
+    .iframe.active {
+      display: block;
+    }
+
+    .click-and-move-overlay {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .tldr {
+      margin: 0;
+      padding: 5px 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .inline-image {
+      height: 20px;
+      vertical-align: middle;
+    }
+
+    /* Carousel styles */
+  
+    /* Update these styles in your existing <style> tag */
+  .carousel-wrapper {
+    position: relative;
+    width: 60%;
+    margin: 0 auto 20px auto;
+}
+
+.carousel-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.5rem;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+}
+
+.carousel-item {
+    flex: 0 0 800px; /* Increase width */
+    height: auto; /* Automatically adjust height */
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.carousel-item video {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure video fits within the container */
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+
+.carousel-item:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.carousel-item.active {
+    border-color: #ffffff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+    .carousel-wrapper {
+        width: 90%;
+    }
+    
+    .carousel-item {
+        flex: 0 0 80px;
+        height: 80px;
+    }
+}
+
+</style>
+
+
+<section class="section has-background-white" style="padding-top: 1rem; padding-bottom: 1rem;">
+  <div class="container is-max-desktop">
+    <!-- Title Row -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">More Results</h2>
+
+      </div>
+    </div>
+    
+    <!-- Content Row -->
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-centered">
+          <p style="font-size: 1.2em;">
+            We compare <a href="https://shape-of-motion.github.io">SoM</a> and <a href="https://jiahuilei.com/projects/mosca/">MoSca</a> on <a href="https://kair-bair.github.io/dycheck/">DyCheck</a> dataset and show the results.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Container -->
+    <div id="video-container-env-dycheck" style="text-align: center; margin: 0px auto; margin-bottom: 20px;">
+      <video autoplay muted loop controls playsinline style="width: auto; height: auto;"> <!-- var(--video-width) -->
+        <source src="./assets/video/combined_video2/ENV_dyCheck/backpack-ENV0.mp4" type="video/mp4">
+      </video>
+    </div>
+    <!-- Selection Panel -->
+    <div class="selection-panel" style="width: 100%; aspect-ratio: 3.3/1; margin-top: 0px; margin-bottom: -150px;">
+      <div style="display: inline-flex; flex-direction: column; align-items: center; height: 100%;">
+        <img class="selectable-image selected" name="backpack-ENV0" src="./assets/img/subvideo_img/6.png">
+        <div style="font-size: 0.8em;">Backpack-View 1</div>
+      </div>
+      <div style="display: inline-flex; flex-direction: column; align-items: center; height: 100%;">
+        <img class="selectable-image" name="backpack-ENV1" src="./assets/img/subvideo_img/7.png">
+        <div style="font-size: 0.8em;">Backpack-View 2</div>
+      </div>
+      <div style="display: inline-flex; flex-direction: column; align-items: center; height: 100%;">
+        <img class="selectable-image" name="haru-sit-ENV0" src="./assets/img/subvideo_img/8.png">
+        <div style="font-size: 0.8em;">Haru-sit-View 1</div>
+      </div>
+    </div>
+    <br>
+
+    <!-- SoM on Davis -->
+    <!-- Separator -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <div style="font-size: 2em; color: transparent; -webkit-text-stroke: 2px rgb(0,255,255); text-stroke: 2px rgb(0,255,255); margin: 20px 0;">◆</div>
+      </div>
+    </div>
+    
+    <!-- Content Row -->
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+         <div class="content has-text-centered">
+           <p style="font-size: 1.2em;">
+             We compare <a href="https://shape-of-motion.github.io">SoM</a> on <a href="https://davischallenge.org/index.html">DAVIS</a> dataset and show the results.
+           </p>
+         </div>
+      </div>
+    </div>
+    <!-- Video Container -->
+    <div id="video-container-davis" style="text-align: center; margin: 0px auto; margin-top: -0px;">
+      <video autoplay muted loop controls playsinline style="width: auto; height: auto;">
+        <source src="./assets/video/combined_video2/ENV_Davis/breakdance-flare-ENV1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="selection-panel" style="width: 100%; aspect-ratio: 3.3/1; margin-top: 20px;">
+      <img class="selectable-image selected" name="breakdance-flare-ENV1" src="./assets/img/subvideo_img/10.jpg">
+      <!-- <img class="selectable-image" name="breakdance-flare-ENV2" src="./assets/img/subvideo_img/11.jpg"> -->
+      <img class="selectable-image" name="camel-ENV2" src="./assets/img/subvideo_img/12.jpg">
+      <img class="selectable-image" name="car-roundabout-ENV1" src="./assets/img/subvideo_img/13.jpg">
+      <!-- <img class="selectable-image" name="car-roundabout-ENV2" src="./assets/img/subvideo_img/14.jpg"> -->
+      <img class="selectable-image" name="car-turn-ENV1" src="./assets/img/subvideo_img/15.jpg">
+      <!-- <img class="selectable-image" name="car-turn-ENV2" src="./assets/img/subvideo_img/16.jpg"> -->
+      <!-- <img class="selectable-image" name="drift-straight-ENV1" src="./assets/img/subvideo_img/17.jpg"> -->
+      <img class="selectable-image" name="drift-straight-ENV2" src="./assets/img/subvideo_img/18.jpg">
+      <img class="selectable-image" name="rhino-ENV1" src="./assets/img/subvideo_img/19.jpg">
+      <!-- <img class="selectable-image" name="helicopter-ENV1" src="./assets/img/subvideo_img/20.jpg"> -->
+      <img class="selectable-image" name="helicopter-ENV2" src="./assets/img/subvideo_img/21.jpg">
+      <img class="selectable-image" name="libby-ENV1" src="./assets/img/subvideo_img/22.jpg">
+      <!-- <img class="selectable-image" name="libby-ENV2" src="./assets/img/subvideo_img/23.jpg"> -->
+    </div>
+
+    <!-- MoSca on Davis -->
+    <!-- Separator -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <div style="font-size: 2em; color: transparent; -webkit-text-stroke: 2px rgb(0,255,255); text-stroke: 2px rgb(0,255,255); margin: 20px 0;">◆</div>
+      </div>
+    </div>
+    <!-- Content Row -->
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+         <div class="content has-text-centered">
+           <p style="font-size: 1.2em;">
+             We compare <a href="https://jiahuilei.com/projects/mosca/">MoSca</a> on <a href="https://davischallenge.org/index.html">DAVIS</a> dataset and show the results.
+           </p>
+         </div>
+      </div>
+    </div>
+    <!-- Video Container -->
+    <div id="video-container-davis" style="text-align: center; margin: 0px auto; margin-top: -0px;">
+      <video autoplay muted loop controls playsinline style="width: auto; height: auto;">
+        <source src="./assets/video/subvideo/30.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="selection-panel" style="width: 100%; aspect-ratio: 3.3/1; margin-top: 20px;">
+      <img class="selectable-image selected" name="breakdance-flare-ENV1-mosca" src="./assets/img/subvideo_img/30.jpg">
+      <img class="selectable-image" name="car-roundabout-ENV1-mosca" src="./assets/img/subvideo_img/26.jpg">
+      <img class="selectable-image" name="train-ENV1-mosca" src="./assets/img/subvideo_img/28.jpg">
+      <img class="selectable-image" name="helicopter-ENV1-mosca" src="./assets/img/subvideo_img/24.jpg">
+    </div>
+
+    <!-- SoM and MoSca on Objaverse -->
+    <!-- Separator -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <div style="font-size: 2em; color: transparent; -webkit-text-stroke: 2px rgb(0,255,255); text-stroke: 2px rgb(0,255,255); margin: 20px 0;">◆</div>
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-centered">
+          <p style="font-size: 1.2em;">
+            We compare <a href="https://shape-of-motion.github.io">SoM</a> and <a href="https://jiahuilei.com/projects/mosca/">MoSca</a> on Objaverse dataset and show the results.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Video Container -->
+    <div id="video-container-objaverse" style="text-align: center; margin: 0px auto; margin-top: -0px;">
+      <video autoplay muted loop controls playsinline style="width: auto; height: auto;">
+        <source src="./assets/video/subvideo/32.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <!-- <h2 class="title is-3">Extreme Novel View</h2> -->
+        <h3 class="subtitle is-6" style="font-size: 100%; margin-top: -10px;">Rotational Views</h3>
+      </div>
+    </div>
+    <div class="selection-panel" style="width: 100%; aspect-ratio: 3.3/1; margin-top: -80px;">
+      <img class="selectable-image selected" name="rat-mosca" src="./assets/img/subvideo_img/32.jpg">
+      <img class="selectable-image" name="doctor-mosca" src="./assets/img/subvideo_img/33.jpg">
+      <img class="selectable-image" name="angryBird-mosca" src="./assets/img/subvideo_img/34.jpg">
+    </div>
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <!-- <h2 class="title is-3">Extreme Novel View</h2> -->
+        <h3 class="subtitle is-6" style="font-size: 100%; margin-top: -80px;">Front Views</h3>
+      </div>
+    </div>
+    <div class="selection-panel" style="width: 100%; aspect-ratio: 3.3/1; margin-top: -140px;">
+      <img class="selectable-image selected" name="woman-front" src="./assets/img/subvideo_img/35.jpg">
+      <img class="selectable-image" name="doctor-front" src="./assets/img/subvideo_img/36.jpg">
+      <img class="selectable-image" name="angryBird-front" src="./assets/img/subvideo_img/37.jpg">
+    </div>
+  </div>
+</section>
+
+<section class="section has-background-white" style="padding-top: 1rem; padding-bottom: 1rem;">
+<!-- <section> -->
+  <div class="container is-max-desktop">
+    <!-- Title Row -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">Tracking Results</h2>
+      </div>
+    </div>
+
+    <!-- Video Container -->
+    <div id="video-container-tracking-dycheck" style="text-align: center; margin: 0px auto; margin-bottom: -60px;">
+      <video autoplay muted loop controls playsinline style="width: auto; height: auto;">
+        <source src="./assets/video/combined_video2/tracking_dyCheck/backpack-ENV1.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Selection Panel -->
+    <div class="selection-panel" style="width: 100%; aspect-ratio: 3.3/1; margin-top: 0px; margin-bottom: -60px;">
+      <img class="selectable-image selected" name="backpack-ENV1" src="./assets/img/subvideo_img/42.png">
+      <img class="selectable-image" name="harusit-ENV0" src="./assets/img/subvideo_img/43.png">
+      <img class="selectable-image" name="camel-ENV9" src="./assets/img/subvideo_img/44.jpg">
+      <img class="selectable-image" name="helicopter-ENV9" src="./assets/img/subvideo_img/45.jpg">
+    </div>
+  </div>
+</section>
+
+<br>
+
+<section class="section has-background-white" style="padding-top: 1rem; padding-bottom: 1rem;"></section>
+<!-- <section> -->
+  <div class="container is-max-desktop">
+    <!-- Title Row -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">Validation View</h2>
+      </div>
+    </div>
+
+    <!-- Video Container -->
+    <div id="video-container-validation" style="text-align: center; margin: 0px auto; margin-bottom: -60px;">
+      <video autoplay muted loop controls playsinline style="width: auto; height: auto;">
+        <source src="./assets/video/combined_video2/val_dyCheck/apple-val0.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Selection Panel -->
+    <div class="selection-panel" style="width: 100%; aspect-ratio: 3.3/1; margin-top: 0px;">
+      <img class="selectable-image selected" name="apple-val0" src="./assets/img/val_dyCheck/apple-gt-val0.png">
+      <img class="selectable-image" name="apple-val1" src="./assets/img/val_dyCheck/apple-gt-val1.png">
+      <img class="selectable-image" name="paper-windmill-val0" src="./assets/img/val_dyCheck/paper-windmill-gt-val0.png">
+      <img class="selectable-image" name="paper-windmill-val1" src="./assets/img/val_dyCheck/paper-windmill-gt-val1.png">
+      <img class="selectable-image" name="spin-val0" src="./assets/img/val_dyCheck/spin-gt-val0.png">
+      <img class="selectable-image" name="spin-val1" src="./assets/img/val_dyCheck/spin-gt-val1.png">
+      <!-- <img class="selectable-image" name="space-out-val0" src="./assets/img/val_dyCheck/space-out-gt-val0.png"> -->
+    </div>
+  </div>
+</section>
+
+<section class="section" id="Related work">
+  <div class="container is-max-desktop content" >
+    <h2 class="title is-3">Related Works</h2>
+    The related works addressing similar problems are listed below: <br>
+    <li style="margin-left: 20px;"><a href="https://shape-of-motion.github.io">Shape of Motion: 4D Reconstruction from a Single Video</a></li>
+    <li style="margin-left: 20px;"><a href="https://jiahuilei.com/projects/mosca/">MoSca: Dynamic Gaussian Fusion from Casual Videos via 4D Motion Scaffolds</a></li>
+    <li style="margin-left: 20px;"><a href="https://arxiv.org/pdf/2406.18717">Dynamic Gaussian Marbles for Novel View Synthesis of Casual Monocular Videos</a></li>
+    <li style="margin-left: 20px;"><a href="https://modgs.github.io/">MoDGS: Dynamic Gaussian Splatting from Causually-captured Monocular Videos</a></li>
+  </div>
+</section>
+
+<section class="section" id="Acknowledgements">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3">Acknowledgements</h2>
+    We thank the authors of <a href="https://shape-of-motion.github.io">Shape of Motion</a> and <a href="https://jiahuilei.com/projects/mosca/">MoSca</a> for their great works and sharing the code and results. We also thank the authors of <a href="https://github.com/graphdeco-inria/gaussian-splatting">Gaussian Splatting</a> and <a href="https://github.com/nerfstudio-project/gsplat">gsplat</a> for their great contributions on the Gaussian Splatting implementation.
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3">BibTeX</h2>
+    <pre><code>@inproceedings{usplat4d2025,
+  title     = {Uncertainty Matters in Dynamic Gaussian Splatting for Monocular 4D Reconstruction},
+  author    = {Guo, Fengzhi and Hsu, Chih-Chuan and Ding, Sihao and Zhang, Cheng},
+  journal   = {arXiv preprint arXiv:},
+  year      = {2025}
+}
+</code></pre>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div align="center" class="container">
+    <div class="columns is-centered">
+        <div class="content">
+            This website is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">nerfies</a>.
+        </div>
+      </div>
+    </div>
+</footer>
+
+</body>
+  <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=fffefe&w=70&t=n&d=zx5KCnlEFiyVyu74LZqg3mAXCBtU8zjjGHghl9efasQ&co=ffffff&cmo=ffffff&cmn=ffffff&ct=ffffff'></script>
+</html>
